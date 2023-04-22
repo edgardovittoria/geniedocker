@@ -1,0 +1,18 @@
+name = "Geniedocker"
+uuid = "c3fe4b42-cb27-4209-ac5e-5083fec69c69"
+authors = ["Edgardo Vittoria <edgardovittoria@hotmail.it>"]
+version = "0.1.0"
+
+[deps]
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+FLoops = "cc61a311-1640-44b5-9fba-1b764f453329"
+Genie = "c43c736e-a2d1-11e8-161f-af95117fbd1e"
+Inflector = "6d011eab-0732-4556-8808-e463c76bf3b6"
+IterativeSolvers = "42fd0dbc-a981-5370-80f2-aaf504508153"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+LinearMaps = "7a12625a-238d-50fd-b39a-03d52299707e"
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+MLUtils = "f1d291b0-491e-4a28-83b9-f70985020b54"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+SuperLU = "149cae9a-b337-42bd-ac98-00096b14e8a3"
