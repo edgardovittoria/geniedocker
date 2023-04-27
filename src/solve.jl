@@ -292,8 +292,13 @@ function doSolving(mesherOutput, solverInput, solverAlgoParams)
 
     grids = []
 
-    for i in testarray
-        grids = unsqueeze([i], dims=2)
+    for values in testarray
+        if (length(testarray) == 1)
+            println("length ",length(testarray))
+            grids = unsqueeze([values], dims=2)
+        else
+            push!(grids, unsqueeze(values, dims=2))
+        end
     end
 
 

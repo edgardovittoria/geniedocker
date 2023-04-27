@@ -1200,7 +1200,7 @@ function generate_interconnection_matrices_and_centers(size_x,size_y,size_z,grid
     for i in range(1, stop=n_grids)
         for j in range(1, stop=num_cel_x)
             for k in range(1, stop=num_cel_y)
-                num_tot_full_vox = num_tot_full_vox + count(grid_matrix[i][j][k])
+                num_tot_full_vox = num_tot_full_vox + count(i-> i==1,grid_matrix[i][j][k])
             end
         end
     end
