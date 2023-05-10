@@ -3,7 +3,7 @@ using Genie, Genie.Renderer, Genie.Renderer.Html, Genie.Renderer.Json, Genie.Req
 include("src/solve.jl")
 
 Genie.config.run_as_server = true
-Genie.config.cors_headers["Access-Control-Allow-Origin"] = "http://localhost:3000"
+Genie.config.cors_headers["Access-Control-Allow-Origin"] = "https://main.d159dyqns1i521.amplifyapp.com/"
 # This has to be this way - you should not include ".../*"
 Genie.config.cors_headers["Access-Control-Allow-Headers"] = "Content-Type"
 Genie.config.cors_headers["Access-Control-Allow-Methods"] ="GET,POST,PUT,DELETE,OPTIONS" 
