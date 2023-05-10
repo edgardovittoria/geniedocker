@@ -15,7 +15,7 @@ end
 
 server = WebsocketServer()
 
-@async serve(server, 8080, "teemaserver.cloud")
+@async serve(server; verbose = true)
 
 listen(server, :client) do client 
   route("/solving" ,method="POST") do 
