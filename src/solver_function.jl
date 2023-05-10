@@ -629,7 +629,7 @@ function ComputeMatrixVector(w,escalings,A,Gamma,P_mat,Lp_x_mat,Lp_y_mat,Lp_z_ma
     return MatrixVector
 end
 
-function Quasi_static_iterative_solver(freq_in,A,Gamma,P_mat,Lp_x_mat,Lp_y_mat,Lp_z_mat,diag_R,diag_Cd,ports,lumped_elements,GMRES_settings)
+function Quasi_static_iterative_solver(freq_in,A,Gamma,P_mat,Lp_x_mat,Lp_y_mat,Lp_z_mat,diag_R,diag_Cd,ports,lumped_elements,GMRES_settings, client)
 
     escalings = escals(1e6, 1e-12, 1e-3, 1e12, 1e3, 1e3, 1e-9)
     #escalings = escals(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)
@@ -696,6 +696,7 @@ function Quasi_static_iterative_solver(freq_in,A,Gamma,P_mat,Lp_x_mat,Lp_y_mat,L
 
     for k in range(1, stop=nfreq)
         println("Freq n=", k, " - Freq Tot=", nfreq)
+        send(client, k)
         Z_self = compute_Z_self(diag_R,diag_Cd, w[k])
         # println("lumped_elements -> ", lumped_elements)
         # println("ports -> ", ports)

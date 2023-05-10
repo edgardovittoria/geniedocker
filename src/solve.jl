@@ -1,7 +1,7 @@
 include("lp_compute.jl")
 include("solver_function.jl")
 include("mesh_manipulation_functions.jl")
-using JSON
+using JSON, SimpleWebsockets
 using MLUtils: unsqueeze
 
 function encode_complex(z)
@@ -266,7 +266,7 @@ struct GMRES_set
 end
 
     
-function doSolving(mesherOutput, solverInput, solverAlgoParams)
+function doSolving(mesherOutput, solverInput, solverAlgoParams, client)    
 
     inputDict = Dict(solverInput)
     mesherDict = Dict(mesherOutput)
@@ -284,11 +284,11 @@ function doSolving(mesherOutput, solverInput, solverAlgoParams)
     Ny = Int64(mesherDict["n_cells"]["n_cells_y"])
     Nz = Int64(mesherDict["n_cells"]["n_cells_z"])
 
-
     testarray = []
     for (index, value) in mesherDict["mesher_matrices"]
         push!(testarray, copy(value))
     end
+
 
     grids = []
 
@@ -333,21 +333,26 @@ function doSolving(mesherOutput, solverInput, solverAlgoParams)
     
     # # END SETTINGS----------------------------------------------
 
-    A, Gamma, ports, lumped_elements, sup_centers, sup_type, bars_Lp_x, bars_Lp_y, bars_Lp_z, diag_R, diag_Cd = generate_interconnection_matrices_and_centers(sx, sy, sz,
-                                                                                                                                                            grids, Nx, Ny, Nz,                                                                                                                                                      MATERIALS, PORTS, L_ELEMENTS,
-                                                                                                                                                            origin)  
+    A, Gamma, ports, lumped_elements, sup_centers, sup_type, bars_Lp_x, bars_Lp_y, bars_Lp_z, diag_R, diag_Cd = generate_interconnection_matrices_and_centers(
+        sx,sy,sz,grids,Nx,Ny,Nz,MATERIALS,PORTS,L_ELEMENTS,origin)  
 
+   
     println("Time for P")
     P_mat = @time compute_P_matrix(sup_centers,sup_type,sx,sy,sz)
+    send(client, "P Computing Completed")
     
     println("Time for Lp")
     Lp_x_mat = @time compute_Lp_matrix_1(bars_Lp_x,sy,sz)
+    send(client, "LPx Computing Completed")
     Lp_y_mat = @time compute_Lp_matrix_2(bars_Lp_y,sx,sz)
+    send(client, "LPy Computing Completed")
     Lp_z_mat = @time compute_Lp_matrix_3(bars_Lp_z,sx,sy)
-   
+    send(client, "LPz Computing Completed")
+    
+
 
     println("Time for solver algo")
-    Z, Y, S = @time Quasi_static_iterative_solver(frequencies,A,Gamma,P_mat,Lp_x_mat,Lp_y_mat,Lp_z_mat,diag_R,diag_Cd,ports,lumped_elements,GMRES_settings)
-
+    Z, Y, S = @time Quasi_static_iterative_solver(frequencies,A,Gamma,P_mat,Lp_x_mat,Lp_y_mat,Lp_z_mat,diag_R,diag_Cd,ports,lumped_elements,GMRES_settings, client)
+    close(client)
     return dump_json_data(Z,S,Y, length(inputDict["ports"]))
 end

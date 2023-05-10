@@ -24,6 +24,7 @@ RUN julia -e "using Pkg; Pkg.activate(\".\"); Pkg.instantiate(); Pkg.precompile(
 
 # ports
 EXPOSE 8000
+EXPOSE 8080
 
 # set up app environment
 ENV JULIA_DEPOT_PATH "/home/genie/.julia"
